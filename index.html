@@ -1,95 +1,642 @@
 <!DOCTYPE HTML>
-<html lang="en">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
   <title>Yiyue Qian</title>
+  
   <meta name="author" content="Yiyue Qian">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <link rel="stylesheet" type="text/css" href="stylesheet.css">
   <link rel="icon" href="images/nd.png" type="image/x-icon"/>
-  
-  <!-- Script to track visitor IP -->
-  <script>
-    async function trackVisitorIP() {
-      try {
-        // Replace 'YOUR_API_KEY' with your actual API key from ipstack or similar services
-        const response = await fetch('https://api.ipstack.com/check?access_key=101ef4d6daf3cb139333c4db9ad7b5f5');
-        const data = await response.json();
-        
-        // Log visitor details to the console (or send it to your server for storage)
-        console.log('Visitor IP:', data.ip);
-        console.log('Location:', `${data.city}, ${data.region_name}, ${data.country_name}`);
-        
-        // Display visitor information on the webpage
-        document.getElementById('visitor-info').innerText = `Your IP: ${data.ip}, Location: ${data.city}, ${data.country_name}`;
-      } catch (error) {
-        console.error('Error fetching IP information:', error);
-      }
-    }
 
-    // Call the function when the page loads
-    window.onload = trackVisitorIP;
-  </script>
 </head>
 
 <body>
-  <table style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-    <tbody>
-      <tr style="padding:0px">
-        <td style="padding:0px">
-          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-            <tbody>
-              <tr style="padding:0px">
-                <td style="padding:2.5%;width:63%;vertical-align:middle">
-                  <p style="text-align:center">
-                    <name>Yiyue Qian</name>
-                  </p>
-                  <p style="text-align:center">
-                    <a href="mailto:yqian5@nd.edu">Email</a> &nbsp;/&nbsp;
-                    <a href="images/Yiyue_Qian_University_of_Notre_Dame__CV.pdf">CV</a> &nbsp;/&nbsp;
-                    <a href="https://scholar.google.com/citations?user=kh5b5gYAAAAJ&hl=en&oi=ao">Google Scholar</a> &nbsp;/&nbsp;
-                    <a href="https://www.linkedin.com/in/yiyue-qian-224655212/">LinkedIn</a>&nbsp;/&nbsp;
-                    <a href="">Github</a>
-                  </p>
-                </td>
-                <td style="padding:2.5%;width:40%;max-width:40%">
-                  <a href="images/id_photo_1.JPG"><img style="width:80%;max-width:100%" alt="profile photo" src="images/id_photo_1.JPG" class="hoverZoomLink"></a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+  <table style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+    <tr style="padding:0px">
+      <td style="padding:0px">
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+          <tr style="padding:0px">
+            <td style="padding:2.5%;width:63%;vertical-align:middle">
+              <p style="text-align:center">
+                <name>Yiyue Qian</name>
+	      </p>
+<!--               <p>I am Yiyue Qian, a senior Ph.D. candidate in <a href="https://cse.nd.edu/">the Department of Computer Science and Engineering</a> at <a href="https://www.nd.edu/">University of Notre Dame</a>, co-advised by <a href="http://yes-lab.org/">Prof. Yanfang Ye</a> and <a href="https://chuxuzhang.github.io/index.html">Prof. Chuxu Zhang</a>. In 2017, I got my M.S. degree from <a href="https://www.ucl.ac.uk/">University College London</a>, London, UK. After graduation from UCL, I joined <a href="https://tech.pingan.com/en/">Ping An Technology</a>, Shenzhen, China, as a NLP algorithm engineer from January 2018 to August 2019. In September 2019, I began my Ph.D. program in the USA. In the summer of 2022, I am doing my internship at <a href="https://www.aboutamazon.com/"> Amazon</a>, Seattle, USA, as a data scientist that focuses on developing graph representation learning models to detect fraud activities (e.g., seller-buyer collusion) and visualize the collusion patterns among bad actors.
+              </p> -->
+		    
+              <p>
+                <!--At Google I've worked on <a href="https://ai.googleblog.com/2020/12/portrait-light-enhancing-portrait.html">Portrait Light</a>, <a href="https://ai.googleblog.com/2014/04/lens-blur-in-new-google-camera-app.html">Lens Blur</a>, <a href="https://ai.googleblog.com/2014/10/hdr-low-light-and-high-dynamic-range.html">HDR+</a>, <a href="https://www.google.com/get/cardboard/jump/">Jump</a>, <a href="https://ai.googleblog.com/2017/10/portrait-mode-on-pixel-2-and-pixel-2-xl.html">Portrait Mode</a>, <a href="https://www.youtube.com/watch?v=JSnB06um5r4">Glass</a>, and <a href="https://www.matthewtancik.com/nerf">NeRF</a>. I did my PhD at <a href="http://www.eecs.berkeley.edu/">UC Berkeley</a>, where I was advised by <a href="http://www.cs.berkeley.edu/~malik/">Jitendra Malik</a> and funded by the <a href="http://www.nsfgrfp.org/">NSF GRFP</a>. I've received the <a href="https://www2.eecs.berkeley.edu/Students/Awards/15/">C.V. Ramamoorthy Distinguished Research Award</a> and the <a href="https://www.thecvf.com/?page_id=413#YRA">PAMI Young Researcher Award</a>.-->
+              </p>
+              <p style="text-align:center">
+                <a href="mailto:yqian5@nd.edu">Email</a> &nbsp/&nbsp
+                <a href="images/Yiyue_Qian_University_of_Notre_Dame__CV.pdf">CV</a> &nbsp/&nbsp
+		<a href="https://scholar.google.com/citations?user=kh5b5gYAAAAJ&hl=en&oi=ao">Google Scholar</a> &nbsp/&nbsp
+                <a href="https://www.linkedin.com/in/yiyue-qian-224655212/">LinkedIn</a>&nbsp/&nbsp
+                <a href="">Github</a> &nbsp&nbsp
 
-          <!-- Education Section -->
-          <table style="width:100%;border-spacing:0px;margin:auto;">
-            <tbody>
-              <tr>
-                <heading><b>Education</b></heading><br><br>
-                <!-- Updated Graduation Status -->
-                <li><a href="https://www.nd.edu/">University of Notre Dame</a>, &emsp; PhD in Computer Science (Graduated), &emsp; South Bend USA, &emsp; Jan. 2022 - Dec. 2023</li><br>
-                Advisor: 
-                <a href="http://yes-lab.org/">Prof. Yanfang Ye</a> and 
-                <a href="https://chuxuzhang.github.io/index.html">Prof. Chuxu Zhang</a>.
-              </tr>
-            </tbody>
-          </table>
+              </p>
+            </td>
+            <td style="padding:2.5%;width:40%;max-width:40%">
+              <a href="images/id_photo_1.JPG"><img style="width:80%;max-width:100%" alt="profile photo" src="images/id_photo_1.JPG" class="hoverZoomLink"></a>
+            </td>
+          </tr>
+        </tbody></table>
 
-          <!-- Other sections like Experience, Research, etc., remain unchanged -->
+	      <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr>
+<!--            <td style="padding:20px;width:100%;vertical-align:middle">-->
+              <heading><b>Education</b></heading>
+              <br>
+              <br>
+              <li> <a href="https://www.nd.edu/">University of Notre Dame</a>, &emsp; PhD in Computer Science, &emsp; South Bend USA, &emsp; Jan. 2022 - Dec. 2023 </li> 
+		    <br>Advisor: <a href="http://yes-lab.org/">Prof. Yanfang Ye</a> and <a href="https://chuxuzhang.github.io/index.html">Prof. Chuxu Zhang</a>. </br>
+              <br>
+              <li> <a href="https://case.edu/">Case Western Reserve University</a>, &emsp; PhD in Computer Science, &emsp; Cleveland USA, &emsp; Sept. 2019 - Dec. 2021. </li>
+		    <br>Advisor: <a href="http://yes-lab.org/">Prof. Yanfang Ye</a>. </br>
+              <br>
+              <li> <a href="https://www.ucl.ac.uk/">University College London</a>, &emsp; Master in Statistics, &emsp; London UK, &emsp; Sept. 2016- Sept. 2017.</li> 
+		    <br>Advisor: <a href="https://www.homepages.ucl.ac.uk/~ucakjxu/">Prof. Jinghao Xue</a>. </br>
+<!--              <p>-->
+<!--                My research interests focus on deep learning, machine learning, and data mining. Specifically, I study graph representation learning, self-supervised learning, contrastive learning, few-shot learning and adversarial learning.-->
+<!--                  &lt;!&ndash;Representative papers are <span class="highlight">highlighted</span>.&ndash;&gt;-->
+<!--              </p>-->
+<!--              <p>-->
+<!--                I sincerely thank all the co-authors.-->
+<!--              </p>-->
+<!--            </td>-->
+          </tr>
+        </tbody></table>
+<br>
+	<br>
+	       <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr>
+<!--            <td style="padding:20px;width:100%;vertical-align:middle">-->
+              <heading><b>Experience</b></heading>
+              <br>
+              <br>
+	      <li> <a href="https://www.aboutamazon.com/">Amazon AWS</a>, &emsp; Applied Scientist II, &emsp; Seattle USA, &emsp; Dec 2023 - present. </li>
+              <br>
+              <li> <a href="https://www.aboutamazon.com/">Amazon</a>, &emsp; Applied Scientist Intern, &emsp; Seattle USA, &emsp; May 2023 - Sept. 2023. </li>
+              <br>
+              <li> <a href="https://www.aboutamazon.com/">Amazon</a>, &emsp; Data Scientist Intern, &emsp; Seattle USA, &emsp; May 2022 - Aug. 2022. </li>
+              <br>
+              <li> <a href="https://tech.pingan.com/en/">PingAn Technology</a>, &emsp; NLP Algorithm Engineer, &emsp; Shenzhen China, &emsp; Jan. 2018- Aug. 2019. </li>
+<!--              <p>-->
+<!--                My research interests focus on deep learning, machine learning, and data mining. Specifically, I study graph representation learning, self-supervised learning, contrastive learning, few-shot learning and adversarial learning.-->
+<!--                  &lt;!&ndash;Representative papers are <span class="highlight">highlighted</span>.&ndash;&gt;-->
+<!--              </p>-->
+<!--              <p>-->
+<!--                I sincerely thank all the co-authors.-->
+<!--              </p>-->
+<!--            </td>-->
+          </tr>
+        </tbody></table>
+	<br>
+	<br>	
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr>
+<!--            <td style="padding:20px;width:100%;vertical-align:middle">-->
+              <heading><b>Research</b></heading>
+              <br>
+              <br>
+              <li> <b>General</b>: Artificial Intelligence, Generative AI, Deep Learning, Machine Learning, Data Mining </li>
+              <br>
+              <li> <b>Research Direction</b>: Large Language Models, Multi-modal Learning, Graph Representation Learning, Self-supervised Learning, Contrastive Learning, Few-shot Learning, Adversarial Learning </li>
+              <br>
+              <li> <b>Application</b>: Generative AI, Social Networks Mining, Fraud Detection, Cybersecurity </li>
+<!--              <p>-->
+<!--                My research interests focus on deep learning, machine learning, and data mining. Specifically, I study graph representation learning, self-supervised learning, contrastive learning, few-shot learning and adversarial learning.-->
+<!--                  &lt;!&ndash;Representative papers are <span class="highlight">highlighted</span>.&ndash;&gt;-->
+<!--              </p>-->
+<!--              <p>-->
+<!--                I sincerely thank all the co-authors.-->
+<!--              </p>-->
+<!--            </td>-->
+          </tr>
+        </tbody></table>
 
-          <!-- Visitor IP Tracking -->
-          <table style="width:100%;border-spacing:0px;margin:auto;">
-            <tbody>
-              <tr>
-                <!-- Placeholder for displaying visitor IP -->
-                <p id="visitor-info" style="text-align:center; font-size:14px; color:#555;"></p>
-              </tr>
-            </tbody>
-          </table>
 
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+<!--        <td style="padding:20px;width:100%;vertical-align:middle">-->
+<br>
+<br>
+<br>
+        <heading><b>Publication</b></heading>
+		<tr onmouseout="hygcladt_stop()" onmouseover="hygcladt_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <div class="two" id='rep2vec_image'><video  width=100% height=100% muted autoplay loop>
+                <source src="images/fdnas_after.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+                </video></div>
+                <img src='images/hygcladt.png' width="160">
+              </div>
+              <script type="text/javascript">
+                function hygcldc_start() {
+                  document.getElementById('hygcladt_image').style.opacity = "1";
+                }
 
-</body>
+                function hygcldc_stop() {
+                  document.getElementById('hygcladt_image').style.opacity = "0";
+                }
+                hygcldc_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+<!--							<a href="https://ieeexplore.ieee.org/document/9721425">-->
+                <a href="">
+                <papertitle>Dual-level Hypergraph Contrastive Learning with Adaptive Temperature Enhancement</papertitle>
+              </a>
+              <br>
+               <b>Yiyue Qian</b>, Tianyi Ma,  Chuxu Zhang, and Yanfang Ye.
+<!--              <br>-->
+<!--                <p>-->
+                <br>[WWW'24] The International World Wide Web Conference
+<!--                </p>-->
+              <br>
+<!--              <a href="https://github.com/aragakiyuiii/FDNAS">project page</a>-->
+<!--              /-->
+<!--              <a href="https://www.researchgate.net/publication/358814243_Towards_Tailored_Models_on_Private_AIoT_Devices_Federated_Direct_Neural_Architecture_Search">preprint</a>-->
+              <p></p>
+            </td>
+          </tr>
+		
+		<be>
+		
+		<tr onmouseout="hygcldc_stop()" onmouseover="hygcldc_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <div class="two" id='rep2vec_image'><video  width=100% height=100% muted autoplay loop>
+                <source src="images/fdnas_after.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+                </video></div>
+                <img src='images/hygcldc.png' width="160">
+              </div>
+              <script type="text/javascript">
+                function hygcldc_start() {
+                  document.getElementById('hygcldc_image').style.opacity = "1";
+                }
+
+                function hygcldc_stop() {
+                  document.getElementById('hygcldc_image').style.opacity = "0";
+                }
+                hygcldc_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+<!--							<a href="https://ieeexplore.ieee.org/document/9721425">-->
+                <a href="">
+                <papertitle>Hypergraph Contrastive Learning for Drug Trafficking Community Detection</papertitle>
+              </a>
+              <br>
+               Tianyi Ma, <b>Yiyue Qian</b>,  Chuxu Zhang, and Yanfang Ye. (<b>co-first author</b>)
+<!--              <br>-->
+<!--                <p>-->
+                <br>[ICDM'23] The IEEE International Conference on Data Mining
+<!--                </p>-->
+              <br>
+<!--              <a href="https://github.com/aragakiyuiii/FDNAS">project page</a>-->
+<!--              /-->
+<!--              <a href="https://www.researchgate.net/publication/358814243_Towards_Tailored_Models_on_Private_AIoT_Devices_Federated_Direct_Neural_Architecture_Search">preprint</a>-->
+              <p></p>
+            </td>
+          </tr>
+		
+		<br>
+		<tr onmouseout="cmigcl_stop()" onmouseover="cmigcl_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <div class="two" id='cmigcl_image'><video  width=100% height=100% muted autoplay loop>
+                <source src="images/fdnas_after.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+                </video></div>
+                <img src='images/cmigcl.png' width="160">
+              </div>
+              <script type="text/javascript">
+                function cmigcl_start() {
+                  document.getElementById('cmigcl_image').style.opacity = "1";
+                }
+
+                function cmigcl_stop() {
+                  document.getElementById('cmigcl_image').style.opacity = "0";
+                }
+                cmigcl_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+<!--							<a href="https://ieeexplore.ieee.org/document/9721425">-->
+                <a href="">
+                <papertitle>Co-Modality Imbalanced Graph Contrastive Learning</papertitle>
+              </a>
+              <br>
+              <b> Yiyue Qian</b>, Chunhui Zhang, Yiming Zhang, Qianlong Wen, Yanfang Ye, and Chuxu Zhang.
+<!--              <br>-->
+<!--                <p>-->
+                <br>[NeurIPS'22] The Conference on Neural Information Processing Systems
+<!--                </p>-->
+              <br>
+<br>
+        <tr onmouseout="rep2vec_stop()" onmouseover="rep2vec_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <div class="two" id='rep2vec_image'><video  width=100% height=100% muted autoplay loop>
+                <source src="images/fdnas_after.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+                </video></div>
+                <img src='images/rep2vec.png' width="160">
+              </div>
+              <script type="text/javascript">
+                function rep2vec_start() {
+                  document.getElementById('rep2vec_image').style.opacity = "1";
+                }
+
+                function rep2vec_stop() {
+                  document.getElementById('rep2vec_image').style.opacity = "0";
+                }
+                rep2vec_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+<!--							<a href="https://ieeexplore.ieee.org/document/9721425">-->
+                <a href="">
+                <papertitle>Rep2Vec: Repository Embedding via Heterogeneous Graph Adversarial Contrastive Learning</papertitle>
+              </a>
+              <br>
+              <b> Yiyue Qian</b>, Yiming Zhang, Qianlong Wen, Yanfang Ye, and Chuxu Zhang.
+<!--              <br>-->
+<!--                <p>-->
+                <br>[KDD'22] The ACM SIGKDD Conference on Knowledge Discovery and Data Mining
+<!--                </p>-->
+              <br>
+<!--              <a href="https://github.com/aragakiyuiii/FDNAS">project page</a>-->
+<!--              /-->
+<!--              <a href="https://www.researchgate.net/publication/358814243_Towards_Tailored_Models_on_Private_AIoT_Devices_Federated_Direct_Neural_Architecture_Search">preprint</a>-->
+              <p></p>
+            </td>
+          </tr>
+		
+		        <tr onmouseout="clahg_stop()" onmouseover="clahg_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <div class="two" id='clahg_image'><video  width=100% height=100% muted autoplay loop>
+                <source src="images/fdnas_after.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+                </video></div>
+                <img src='images/clahg.png' width="160">
+              </div>
+              <script type="text/javascript">
+                function clahg_start() {
+                  document.getElementById('clahg_image').style.opacity = "1";
+                }
+
+                function clahg_stop() {
+                  document.getElementById('clahg_image').style.opacity = "0";
+                }
+                clahg_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+<!--							<a href="https://ieeexplore.ieee.org/document/9721425">-->
+                <a href="">
+                <papertitle>Malicious Repositories Detection with Adversarial Heterogeneous Graph Contrastive Learning</papertitle>
+              </a>
+              <br>
+              <b> Yiyue Qian</b>, Yiming Zhang, Yanfang Ye, and Chuxu Zhang.
+<!--              <br>-->
+<!--                <p>-->
+                <br>[CIKM'22] The ACM Conference on Information and Knowledge Management
+<!--                </p>-->
+              <br>
+<!--              <a href="https://github.com/aragakiyuiii/FDNAS">project page</a>-->
+<!--              /-->
+<!--              <a href="https://www.researchgate.net/publication/358814243_Towards_Tailored_Models_on_Private_AIoT_Devices_Federated_Direct_Neural_Architecture_Search">preprint</a>-->
+              <p></p>
+            </td>
+          </tr>
+
+        <tr onmouseout="neurips_stop()" onmouseover="neurips_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <div class="two" id='neurips_image'><video  width=100% height=100% muted autoplay loop>
+                <source src="images/adasearch_after.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+                </video></div>
+                <img src='images/neurips.png' width="160">
+              </div>
+              <script type="text/javascript">
+                function neurips_start() {
+                  document.getElementById('neurips_image').style.opacity = "1";
+                }
+
+                function neurips_stop() {
+                  document.getElementById('neurips_image').style.opacity = "0";
+                }
+                neurips_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+							<a href="https://proceedings.neurips.cc/paper/2021/file/e234e195f3789f05483378c397db1cb5-Paper.pdf">
+                <papertitle>Distilling Meta Knowledge on Heterogeneous Graph for Illicit Drug Trafficker Detection on Social Media</papertitle>
+              </a>
+              <br>
+              <b> Yiyue Qian</b>, Yiming Zhang, Yanfang Ye, and Chuxu Zhang.
+<!--              <br>-->
+              <br>[NeurIPS'21] The Conference on Neural Information Processing Systems
+              <br>
+              <a href="https://github.com/Meta-HG/MetaHG">github</a>
+
+<!--              <a href="data/adaSearch_slides.pdf">slides</a>-->
+<!--              /-->
+<!--              <a href="data/aaai22w_adasearch.pdf">preprint</a>-->
+              <p></p>
+            </td>
+          </tr>
+
+        <tr onmouseout="kg_stop()" onmouseover="ijcai_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <div class="two" id='ijcai_image'><video  width=100% height=100% muted autoplay loop>
+                <source src="images/segthor_after.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+                </video></div>
+                <img src='images/ijcai.png' width="160">
+              </div>
+              <script type="text/javascript">
+                function ijcai_start() {
+                  document.getElementById('ijcai_image').style.opacity = "1";
+                }
+
+                function kg_stop() {
+                  document.getElementById('ijcai_image').style.opacity = "0";
+                }
+                kg_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+							<a href="https://par.nsf.gov/servlets/purl/10292372">
+                <papertitle>Adapting Meta Knowledge with Heterogeneous Information Network for COVID-19 Themed Malicious Repository Detection</papertitle>
+              </a>
+              <br>
+              <b> Yiyue Qian</b>, Yiming Zhang, Yanfang Ye, and Chuxu Zhang.
+<!--              <br>-->
+                <br>[IJCAI'21] The International Joint Conference on Artificial Intelligence
+              <br>
+<!--              <a href="http://ceur-ws.org/Vol-2349/SegTHOR2019_paper_8.pdf">preprint</a>-->
+              <p></p>
+            </td>
+          </tr>
+            <tr onmouseout="kg_stop()" onmouseover="kg_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <div class="two" id='kg_image'><video  width=100% height=100% muted autoplay loop>
+                <source src="images/segthor_after.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+                </video></div>
+                <img src='images/kg.png' width="160">
+              </div>
+              <script type="text/javascript">
+                function kg_start() {
+                  document.getElementById('kg_image').style.opacity = "1";
+                }
+
+                function kg_stop() {
+                  document.getElementById('kg_image').style.opacity = "0";
+                }
+                kg_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+							<a href="https://epubs.siam.org/doi/pdf/10.1137/1.9781611977172.75">
+                <papertitle>Adapting Distilled Knowledge for Few-shot Relation Reasoning over Knowledge Graphs</papertitle>
+              </a>
+              <br>
+              Yiming Zhang, <b> Yiyue Qian</b>, Yanfang Ye, and Chuxu Zhang.
+<!--              <br>-->
+                <br>[SDM'22] The SIAM International Conference on Data Mining
+              <br>
+<!--              <a href="http://ceur-ws.org/Vol-2349/SegTHOR2019_paper_8.pdf">preprint</a>-->
+              <p></p>
+            </td>
+          </tr>
+                      <tr onmouseout="drugstyle_stop()" onmouseover="drugstyle_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <div class="two" id='drugstyle_image'><video  width=100% height=100% muted autoplay loop>
+                <source src="images/segthor_after.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+                </video></div>
+                <img src='images/drugstyle.png' width="160">
+              </div>
+              <script type="text/javascript">
+                function drugstyle_start() {
+                  document.getElementById('drugstyle_image').style.opacity = "1";
+                }
+
+                function drugstyle_stop() {
+                  document.getElementById('drugstyle_image').style.opacity = "0";
+                }
+                drugstyle_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+							<a href="https://par.nsf.gov/servlets/purl/10215844">
+                <papertitle>dstyle-gan: Generative adversarial network based on writing and photography styles for drug identification in darknet markets</papertitle>
+              </a>
+              <br>
+              Yiming Zhang, <b> Yiyue Qian</b>, Yanfang Ye, and Chuxu Zhang.
+<!--              <br>-->
+                <br>[ACSAC'20] The Annual Computer Security Applications Conference
+              <br>
+<!--              <a href="http://ceur-ws.org/Vol-2349/SegTHOR2019_paper_8.pdf">preprint</a>-->
+              <p></p>
+            </td>
+          </tr>
+                      <tr onmouseout="ddi_stop()" onmouseover="ddi_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <div class="two" id='ddi_image'><video  width=100% height=100% muted autoplay loop>
+                <source src="images/ddi.png" type="video/mp4">
+                Your browser does not support the video tag.
+                </video></div>
+                <img src='images/ddi.png' width="160">
+              </div>
+              <script type="text/javascript">
+                function ddi_start() {
+                  document.getElementById('ddi_image').style.opacity = "1";
+                }
+
+                function ddi_stop() {
+                  document.getElementById('ddi_image').style.opacity = "0";
+                }
+                ddi_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+							<a href="">
+                <papertitle>Disentangled Dynamic Heterogeneous Graph Learning for Opioid Overdose Prediction</papertitle>
+              </a>
+              <br>
+              Qianlong Wen, Zhongyu Ouyang, Jianfei Zhang, <b> Yiyue Qian </b>, Yanfang Ye, and Chuxu Zhang.
+<!--              <br>-->
+                <br>[KDD'22] The ACM SIGKDD Conference on Knowledge Discovery and Data Mining
+              <br>
+<!--              <a href="http://ceur-ws.org/Vol-2349/SegTHOR2019_paper_8.pdf">preprint</a>-->
+              <p></p>
+            </td>
+          </tr>
+                      <tr onmouseout="alpha_stop()" onmouseover="alpha_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <div class="two" id='alpha_image'><video  width=100% height=100% muted autoplay loop>
+                <source src="images/segthor_after.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+                </video></div>
+                <img src='images/alpha.png' width="160">
+              </div>
+              <script type="text/javascript">
+                function alpha_start() {
+                  document.getElementById('alpha_image').style.opacity = "1";
+                }
+
+                function alpha_stop() {
+                  document.getElementById('alpha_image').style.opacity = "0";
+                }
+                alpha_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+							<a href="https://arxiv.org/pdf/2003.12232.pdf">
+                <papertitle>&#945-Satellite: An AI-driven System and Benchmark Datasets for Hierarchical Community-level Risk Assessment to Help Combat COVID-19</papertitle>
+              </a>
+              <br>
+              Yanfang Ye, Shifu Hou, Yujie Fan, <b>Yiyue Qian</b>, Yiming Zhang, Shiyu Sun, Qian Peng, Kenneth Laparo
+<!--              <br>-->
+                <br>[JBHI'20] IEEE Journal of Biomedical and Health Informatics
+              <br>
+<!--              <a href="http://ceur-ws.org/Vol-2349/SegTHOR2019_paper_8.pdf">preprint</a>-->
+              <p></p>
+            </td>
+          </tr>
+
+                      <tr onmouseout="community_stop()" onmouseover="community_start()">
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <div class="one">
+                <div class="two" id='community_image'><video  width=100% height=100% muted autoplay loop>
+                <source src="images/segthor_after.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+                </video></div>
+                <img src='images/community.png' width="160">
+              </div>
+              <script type="text/javascript">
+                function community_start() {
+                  document.getElementById('community_image').style.opacity = "1";
+                }
+
+                function community_stop() {
+                  document.getElementById('community_image').style.opacity = "0";
+                }
+                community_stop()
+              </script>
+            </td>
+            <td style="padding:20px;width:75%;vertical-align:middle">
+							<a href="https://dl.acm.org/doi/pdf/10.1145/3340531.3412753">
+                <papertitle>Community mitigation: A data-driven system for covid-19 risk assessment in a hierarchical manner</papertitle>
+              </a>
+              <br>
+              Yanfang Ye, Yujie Fan, Shifu Hou, Yiming Zhang, <b>Yiyue Qian</b>, Shiyu Sun, Qian Peng, Mingxuan Ju, Wei Song, Kenneth Loparo
+<!--              <br>-->
+                <br>[CIKM'20] The ACM International Conference on Information and Knowledge Management
+              <br>
+<!--              <a href="http://ceur-ws.org/Vol-2349/SegTHOR2019_paper_8.pdf">preprint</a>-->
+              <p></p>
+            </td>
+          </tr>
+
+        </tbody></table>
+	      
+  <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20"><tbody>
+          <tr>
+<br>
+            <heading><b>Award</b></heading>
+<br>
+            <br>
+          </tr>
+        </tbody></table>
+        <table width="100%" align="center" border="0" cellpadding="20"><tbody>
+
+          <tr>
+<!--            <td style="padding:20px;width:25%;vertical-align:middle"><img src="images/cvf.jpg"></td>-->
+            <li> NeurIPS Scholar Award, 2022 </li>
+	    <li> CIKM Student Travel Award, 2022 </li>
+	    <li> National Scholarship Award, 2014 </li>
+	    <li> National Encouragement Scholarship Award, 2013 </li>  
+            </td>
+          </tr>							
+        </tbody></table>
+	 
+        <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20"><tbody>
+          <tr>
+<br>
+            <heading><b>Service</b></heading>
+<br>
+            <br>
+          </tr>
+        </tbody></table>
+        <table width="100%" align="center" border="0" cellpadding="20"><tbody>
+					
+          <tr>
+<!--            <td style="padding:20px;width:25%;vertical-align:middle"><img src="images/cvf.jpg"></td>-->
+		   <li> Senior Program Committee: CIKM'24.</li>
+            <br>
+            <li> Conference Program Committee Member: KDD'22, ICDM'22, WWW'22, AAAI'23, KDD'23, IJCAI'23, NeurIPS'23, AAAI'24, SDM'24, ICRL'24, WWW'24, ICML'24, KDD'24.</li>
+            <br>
+              <li> Journal Reviewer: The Journal of Neurocomputing, Transactions on Big Data, Transactions on Dependable and Secure Computing, 
+		      Transactions on Dependable and Secure Computing, ACM Transactions on Privacy and Security, Transactions on Neural Networks and Learning System. </li>
+		  <br>
+		  <li> Outreach Program Judger: Learning Science Sphere Event at Northpoint Elementary School in 2023 </li>
+<!-- 	    <br>
+              <li> Reviewer in ICDM </li>
+            <br>
+            <li> Reviewer in The Journal of Neurocomputing </li>
+            <br> -->
+<!--            <li> Teaching assistant of computer security (CSE-40567, CSDS 344) </li>-->
+
+            </td>
+          </tr>
+
+
+           <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20"><tbody>
+          <tr>
+<br>
+            <heading><b>Teaching</b></heading>
+<br>
+            <br>
+          </tr>
+        </tbody></table>
+        <table width="100%" align="center" border="0" cellpadding="20"><tbody>
+
+          <tr>
+<!--            <td style="padding:20px;width:25%;vertical-align:middle"><img src="images/cvf.jpg"></td>-->
+            <li> Teaching assistant of computer security (CSE-40567, CSDS 344) </li>
+
+            </td>
+          </tr>							
+        </tbody></table>
+
+<!--        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>-->
+<!--          <tr>-->
+<!--            <td style="padding:0px">-->
+<!--              <br>-->
+<!--              <p style="text-align:right;font-size:small;">-->
+<!--                Design and source code from <a href="https://github.com/jonbarron/jonbarron_website">this cool guy</a>.-->
+<!--                <br>-->
+<!--              </p>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--        </tbody></table>-->
+<!--      </td>-->
+<!--    </tr>-->
+<!--  </table>-->
+<!--</body>-->
 
 </html>
