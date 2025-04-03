@@ -67,7 +67,50 @@
           </tr>
         </tbody></table>
 
-	<script>
+ <script src="https://www.webglearth.com/v2/api.js"></script>
+  <style>
+    #globe {
+      width: 100%;
+      height: 500px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <table style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
+    <tbody>
+      <tr style="padding:0px">
+        <td style="padding:0px">
+          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
+            <tbody>
+              <tr style="padding:0px">
+                <td style="padding:2.5%;width:63%;vertical-align:middle">
+                  <p style="text-align:center">
+                    <name>Yiyue Qian</name>
+                  </p>
+                  <p style="text-align:center">
+                    <a href="mailto:yqian5@nd.edu">Email</a> &nbsp;/&nbsp;
+                    <a href="images/Yiyue_Qian_University_of_Notre_Dame__CV.pdf">CV</a> &nbsp;/&nbsp;
+                    <a href="https://scholar.google.com/citations?user=kh5b5gYAAAAJ&hl=en&oi=ao">Google Scholar</a> &nbsp;/&nbsp;
+                    <a href="https://www.linkedin.com/in/yiyue-qian-224655212/">LinkedIn</a>&nbsp;/&nbsp;
+                    <a href="">Github</a>
+                  </p>
+                </td>
+                <td style="padding:2.5%;width:40%;max-width:40%">
+                  <a href="images/id_photo_1.JPG"><img style="width:80%;max-width:100%" alt="profile photo" src="images/id_photo_1.JPG" class="hoverZoomLink"></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Add Globe Tracker Section -->
+          <h2 style="text-align:center;">Visitor Location Tracker</h2>
+
+          <!-- Globe Container -->
+          <div id="globe"></div>
+
+          <!-- JavaScript for IP Tracking and Globe -->
+          <script>
             // Initialize the globe
             const earth = new WE.map('globe');
             WE.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(earth);
@@ -76,7 +119,7 @@
             // Fetch visitor's IP and location using ip-api
             async function trackVisitorIP() {
               try {
-                const response = await fetch('http://ip-api.com/json/');
+                const response = await fetch('https://ip-api.com/json/');
                 const data = await response.json();
 
                 // Log visitor's IP and location
@@ -94,6 +137,12 @@
             // Call the function to track and display visitor location
             trackVisitorIP();
           </script>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
 <br>
 	<br>
 	       <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
@@ -150,8 +199,6 @@
 <br>
 <br>
         <heading><b>Publication</b></heading>
-
-##########
 		<tr onmouseout="collabeval_stop()" onmouseover="adgsmote_start()">
             <td style="padding:20px;width:25%;vertical-align:middle">
               <div class="one">
