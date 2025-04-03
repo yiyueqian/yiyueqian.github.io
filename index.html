@@ -66,6 +66,34 @@
 <!--            </td>-->
           </tr>
         </tbody></table>
+
+	<script>
+            // Initialize the globe
+            const earth = new WE.map('globe');
+            WE.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(earth);
+            earth.setView([20, 0], 2); // Default view
+
+            // Fetch visitor's IP and location using ip-api
+            async function trackVisitorIP() {
+              try {
+                const response = await fetch('http://ip-api.com/json/');
+                const data = await response.json();
+
+                // Log visitor's IP and location
+                console.log('Visitor IP:', data.query);
+                console.log('Location:', `${data.city}, ${data.regionName}, ${data.country}`);
+
+                // Add a marker to the globe at the visitor's location
+                const marker = WE.marker([data.lat, data.lon]).addTo(earth);
+                marker.bindPopup(`You are here: ${data.city}, ${data.country}`, { maxWidth: 150, closeButton: true }).openPopup();
+              } catch (error) {
+                console.error('Error fetching IP information:', error);
+              }
+            }
+
+            // Call the function to track and display visitor location
+            trackVisitorIP();
+          </script>
 <br>
 	<br>
 	       <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
