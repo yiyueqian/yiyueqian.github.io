@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Migration Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .status.info { background: #d1ecf1; color: #0c5460; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔄 Data Migration Test</h1>
+    
+    <div class="test-panel">
+        <h3>Migration Status</h3>
+        <div id="migration-status"></div>
+        <button onclick="checkMigration()">Check Migration Status</button>
+        <button onclick="forceMigration()">Force Migration</button>
+    </div>
+    
+    <div class="test-panel">
+        <h3>Data Comparison</h3>
+        <div id="data-comparison"></div>
+        <button onclick="compareData()">Compare Data</button>
+    </div>
+    
+    <div class="test-panel">
+        <h3>Enhanced Tracker Test</h3>
+        <div id="tracker-test"></div>
+        <button onclick="testEnhancedTracker()">Test Enhanced Tracker</button>
+    </div>
+    
+    <div class="test-panel">
+        <h3>Raw Data</h3>
+        <pre id="raw-data">Click "Check Migration Status" to see data...</pre>
+    </div>
+
+    <!-- Load the enhanced tracker -->
+    <script src="fix-functions.js"></script>
+    <script src="enhanced-ip-tracker.js"></script>
+    
+    <script>
+        function showStatus(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.innerHTML += `<div class="status ${type}">${message}</div>`;
+        }
+        
+        function clearStatus(elementId) {
+            document.getElementById(elementId).innerHTML = '';
+        }
+        
+        function checkMigration() {
+            clearStatus('migration-status');
+            
+            const basicKey = 'visitor_tracking_data';
+            const basicData = localStorage.getItem(basicKey);
+            
+            if (!basicData) {
+                showStatus('migration-status', '❌ No data found in localStorage', 'error');
+                return;
+            }
+            
+            try {
+                const parsed = JSON.parse(basicData);
+                
+                // Check if data is in enhanced format
+                const isEnhanced = parsed.visits && parsed.visits.length > 0 && 
+                                 parsed.visits[0].device && parsed.visits[0].browser;
+                
+                if (isEnhanced) {
+                    showStatus('migration-status', '✅ Data is already in enhanced format!', 'success');
+                    showStatus('migration-status', `📊 Total visits: ${parsed.totalVisits}`, 'info');
+                    showStatus('migration-status', `👥 Unique visitors: ${parsed.uniqueVisitors?.length || 0}`, 'info');
+                    showStatus('migration-status', `📱 Device data: Available`, 'success');
+                    showStatus('migration-status', `🌐 Browser data: Available`, 'success');
+                } else {
+                    showStatus('migration-status', '⚠️ Data is in basic format', 'info');
+                    showStatus('migration-status', `📊 Total visits: ${parsed.totalVisits}`, 'info');
+                    showStatus('migration-status', `👥 Unique visitors: ${parsed.uniqueVisitors?.length || 0}`, 'info');
+                    showStatus('migration-status', '🔄 Migration needed', 'info');
+                }
+                
+                // Display raw data
+                document.getElementById('raw-data').textContent = JSON.stringify(parsed, null, 2);
+                
+            } catch (error) {
+                showStatus('migration-status', `❌ Error parsing data: ${error.message}`, 'error');
+            }
+        }
+        
+        function forceMigration() {
+            clearStatus('migration-status');
+            showStatus('migration-status', '🔄 Starting forced migration...', 'info');
+            
+            // Reload the page to trigger migration
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        }
+        
+        function compareData() {
+            clearStatus('data-comparison');
+            
+            const data = localStorage.getItem('visitor_tracking_data');
+            if (!data) {
+                showStatus('data-comparison', '❌ No data to compare', 'error');
+                return;
+            }
+            
+            try {
+                const parsed = JSON.parse(data);
+                
+                // Basic stats
+                showStatus('data-comparison', `📊 Total Visits: ${parsed.totalVisits || 0}`, 'info');
+                showStatus('data-comparison', `👥 Unique Visitors: ${parsed.uniqueVisitors?.length || 0}`, 'info');
+                showStatus('data-comparison', `📅 Last Visit: ${parsed.lastVisit ? new Date(parsed.lastVisit).toLocaleString() : 'Never'}`, 'info');
+                
+                // Enhanced features
+                if (parsed.analytics) {
+                    const devices = Object.keys(parsed.analytics.devices || {}).length;
+                    const browsers = Object.keys(parsed.analytics.browsers || {}).length;
+                    const countries = Object.keys(parsed.analytics.countries || {}).length;
+                    
+                    showStatus('data-comparison', `📱 Device Types Tracked: ${devices}`, devices > 0 ? 'success' : 'info');
+                    showStatus('data-comparison', `🌐 Browsers Tracked: ${browsers}`, browsers > 0 ? 'success' : 'info');
+                    showStatus('data-comparison', `🌍 Countries Tracked: ${countries}`, countries > 0 ? 'success' : 'info');
+                    
+                    if (devices > 0) {
+                        showStatus('data-comparison', `Device breakdown: ${JSON.stringify(parsed.analytics.devices)}`, 'success');
+                    }
+                    if (browsers > 0) {
+                        showStatus('data-comparison', `Browser breakdown: ${JSON.stringify(parsed.analytics.browsers)}`, 'success');
+                    }
+                } else {
+                    showStatus('data-comparison', '⚠️ No enhanced analytics data found', 'info');
+                }
+                
+            } catch (error) {
+                showStatus('data-comparison', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+        
+        function testEnhancedTracker() {
+            clearStatus('tracker-test');
+            
+            // Check if enhanced tracker is loaded
+            if (typeof EnhancedIPTracker === 'undefined') {
+                showStatus('tracker-test', '❌ Enhanced tracker not loaded', 'error');
+                return;
+            }
+            
+            showStatus('tracker-test', '✅ Enhanced tracker class found', 'success');
+            
+            // Check if instance exists
+            if (window.enhancedIPTracker) {
+                showStatus('tracker-test', '✅ Enhanced tracker instance exists', 'success');
+                
+                try {
+                    const stats = window.enhancedIPTracker.getEnhancedStats();
+                    showStatus('tracker-test', `📊 Current stats: ${stats.totalVisits} visits, ${stats.uniqueVisitors} unique`, 'success');
+                    
+                    if (stats.analytics) {
+                        showStatus('tracker-test', '✅ Enhanced analytics available', 'success');
+                        showStatus('tracker-test', `Device data: ${JSON.stringify(stats.analytics.devices)}`, 'info');
+                    }
+                    
+                } catch (error) {
+                    showStatus('tracker-test', `❌ Error getting stats: ${error.message}`, 'error');
+                }
+            } else {
+                showStatus('tracker-test', '⚠️ Enhanced tracker instance not found', 'info');
+                showStatus('tracker-test', '🔄 Creating new instance...', 'info');
+                
+                try {
+                    window.enhancedIPTracker = new EnhancedIPTracker({
+                        debugMode: true,
+                        trackingEnabled: true
+                    });
+                    showStatus('tracker-test', '✅ Enhanced tracker instance created', 'success');
+                } catch (error) {
+                    showStatus('tracker-test', `❌ Failed to create instance: ${error.message}`, 'error');
+                }
+            }
+        }
+        
+        // Auto-run checks when page loads
+        setTimeout(() => {
+            checkMigration();
+            compareData();
+            testEnhancedTracker();
+        }, 2000);
+    </script>
+</body>
+</html>

@@ -12,7 +12,7 @@ class EnhancedIPTracker {
             enablePerformanceTracking: options.enablePerformanceTracking !== false,
             apiEndpoint: options.apiEndpoint || 'https://ipapi.co/json/',
             fallbackEndpoint: options.fallbackEndpoint || 'https://api.ipify.org?format=json',
-            storageKey: options.storageKey || 'enhanced_visitor_tracking_data',
+            storageKey: options.storageKey || 'visitor_tracking_data', // Use same key as basic tracker
             maxStoredVisits: options.maxStoredVisits || 100,
             trackingEnabled: options.trackingEnabled !== false,
             debugMode: options.debugMode || false,
@@ -500,14 +500,243 @@ class EnhancedIPTracker {
             const stored = localStorage.getItem(this.options.storageKey);
             if (stored) {
                 const parsedData = JSON.parse(stored);
-                this.visitData = {
-                    ...this.visitData,
-                    ...parsedData,
-                    uniqueVisitors: new Set(parsedData.uniqueVisitors || [])
-                };
+                
+                // Check if this is old basic format data
+                if (this.isBasicFormat(parsedData)) {
+                    this.log('🔄 Detected basic format data, converting to enhanced format...');
+                    this.visitData = this.convertBasicToEnhanced(parsedData);
+                    this.log('✅ Data converted to enhanced format');
+                    // Save the converted data
+                    this.saveData();
+                } else {
+                    // Already enhanced format
+                    this.visitData = {
+                        ...this.visitData,
+                        ...parsedData,
+                        uniqueVisitors: new Set(parsedData.uniqueVisitors || [])
+                    };
+                }
             }
         } catch (error) {
             this.log('Error loading stored data:', error);
+        }
+    }
+    
+    isBasicFormat(data) {
+        // Check if data is in basic format (missing enhanced fields)
+        if (!data.visits || data.visits.length === 0) return false;
+        
+        const firstVisit = data.visits[0];
+        // Basic format visits don't have nested objects like device, browser, etc.
+        return !firstVisit.device && !firstVisit.browser && !firstVisit.performance;
+    }
+    
+    convertBasicToEnhanced(basicData) {
+        this.log('Converting basic data to enhanced format...');
+        
+        const enhancedData = {
+            visits: [],
+            totalVisits: basicData.totalVisits || 0,
+            uniqueVisitors: basicData.uniqueVisitors || [],
+            sessions: {},
+            analytics: {
+                devices: {},
+                browsers: {},
+                operatingSystems: {},
+                countries: basicData.countries || {},
+                cities: basicData.cities || {},
+                referrers: {},
+                languages: {},
+                screenResolutions: {},
+                connectionTypes: {}
+            },
+            lastVisit: basicData.lastVisit
+        };
+        
+        // Convert basic visits to enhanced format
+        if (basicData.visits && Array.isArray(basicData.visits)) {
+            enhancedData.visits = basicData.visits.map(basicVisit => {
+                // Parse user agent to extract device/browser info
+                const deviceInfo = this.parseUserAgent(basicVisit.userAgent || '');
+                
+                return {
+                    // Basic info (preserved)
+                    timestamp: basicVisit.timestamp,
+                    sessionId: basicVisit.sessionId || this.generateSessionId(),
+                    ip: basicVisit.ip,
+                    isUniqueVisitor: basicVisit.isUniqueVisitor,
+                    
+                    // Location data (preserved)
+                    location: {
+                        country: basicVisit.country || 'Unknown',
+                        city: basicVisit.city || 'Unknown',
+                        region: basicVisit.region || 'Unknown',
+                        timezone: basicVisit.timezone || 'Unknown',
+                        latitude: null,
+                        longitude: null
+                    },
+                    
+                    // Device information (inferred)
+                    device: {
+                        type: deviceInfo.deviceType,
+                        isMobile: deviceInfo.isMobile,
+                        isTablet: deviceInfo.isTablet,
+                        isDesktop: deviceInfo.isDesktop,
+                        screen: {
+                            width: null,
+                            height: null,
+                            resolution: 'Unknown'
+                        },
+                        viewport: {
+                            width: null,
+                            height: null,
+                            size: 'Unknown'
+                        },
+                        pixelRatio: 1,
+                        touchSupport: deviceInfo.isMobile || deviceInfo.isTablet,
+                        orientation: 'unknown'
+                    },
+                    
+                    // Browser information (inferred)
+                    browser: {
+                        name: deviceInfo.browserName,
+                        version: deviceInfo.browserVersion,
+                        userAgent: basicVisit.userAgent || '',
+                        language: 'Unknown',
+                        languages: [],
+                        platform: deviceInfo.platform,
+                        cookiesEnabled: true,
+                        doNotTrack: false,
+                        onlineStatus: true
+                    },
+                    
+                    // Performance metrics (not available)
+                    performance: null,
+                    
+                    // Environment details (basic)
+                    environment: {
+                        protocol: 'https:',
+                        isSecure: true,
+                        port: 443,
+                        features: {
+                            localStorage: true,
+                            sessionStorage: true
+                        },
+                        timezone: {
+                            name: basicVisit.timezone || 'Unknown',
+                            offset: null,
+                            offsetString: 'Unknown'
+                        }
+                    },
+                    
+                    // Behavior data (defaults)
+                    behavior: {
+                        scrollDepth: 0,
+                        timeOnPage: 0,
+                        interactions: 0,
+                        pageViews: 1,
+                        isNewSession: basicVisit.isUniqueVisitor,
+                        documentState: {
+                            readyState: 'complete',
+                            hidden: false,
+                            visibilityState: 'visible'
+                        }
+                    },
+                    
+                    // Page context
+                    page: {
+                        url: 'https://yiyueqian.github.io/',
+                        title: 'Yiyue Qian',
+                        referrer: basicVisit.referrer || 'Direct',
+                        pathname: '/',
+                        search: '',
+                        hash: ''
+                    }
+                };
+            });
+        }
+        
+        // Update analytics based on converted visits
+        enhancedData.visits.forEach(visit => {
+            this.updateAnalyticsFromConvertedVisit(enhancedData.analytics, visit);
+        });
+        
+        return enhancedData;
+    }
+    
+    parseUserAgent(userAgent) {
+        const ua = userAgent.toLowerCase();
+        
+        // Detect device type
+        const isMobile = /mobile|android|iphone/.test(ua);
+        const isTablet = /ipad|android(?!.*mobile)/.test(ua);
+        const isDesktop = !isMobile && !isTablet;
+        
+        // Detect browser
+        let browserName = 'Unknown';
+        let browserVersion = 'Unknown';
+        
+        if (ua.includes('chrome')) {
+            browserName = 'Chrome';
+            const match = ua.match(/chrome\/(\d+)/);
+            browserVersion = match ? match[1] : 'Unknown';
+        } else if (ua.includes('firefox')) {
+            browserName = 'Firefox';
+            const match = ua.match(/firefox\/(\d+)/);
+            browserVersion = match ? match[1] : 'Unknown';
+        } else if (ua.includes('safari') && !ua.includes('chrome')) {
+            browserName = 'Safari';
+            const match = ua.match(/version\/(\d+)/);
+            browserVersion = match ? match[1] : 'Unknown';
+        } else if (ua.includes('edge')) {
+            browserName = 'Edge';
+            const match = ua.match(/edge\/(\d+)/);
+            browserVersion = match ? match[1] : 'Unknown';
+        }
+        
+        // Detect platform
+        let platform = 'Unknown';
+        if (ua.includes('windows')) platform = 'Windows';
+        else if (ua.includes('mac')) platform = 'macOS';
+        else if (ua.includes('linux')) platform = 'Linux';
+        else if (ua.includes('android')) platform = 'Android';
+        else if (ua.includes('ios') || ua.includes('iphone') || ua.includes('ipad')) platform = 'iOS';
+        
+        return {
+            deviceType: isMobile ? 'mobile' : isTablet ? 'tablet' : 'desktop',
+            isMobile,
+            isTablet,
+            isDesktop,
+            browserName,
+            browserVersion,
+            platform
+        };
+    }
+    
+    updateAnalyticsFromConvertedVisit(analytics, visit) {
+        // Update device analytics
+        const deviceType = visit.device.type;
+        analytics.devices[deviceType] = (analytics.devices[deviceType] || 0) + 1;
+        
+        // Update browser analytics
+        const browserName = visit.browser.name;
+        analytics.browsers[browserName] = (analytics.browsers[browserName] || 0) + 1;
+        
+        // Update OS analytics
+        const platform = visit.browser.platform;
+        analytics.operatingSystems[platform] = (analytics.operatingSystems[platform] || 0) + 1;
+        
+        // Update referrer analytics
+        const referrer = visit.page.referrer;
+        if (referrer !== 'Direct') {
+            try {
+                const referrerDomain = new URL(referrer).hostname;
+                analytics.referrers[referrerDomain] = (analytics.referrers[referrerDomain] || 0) + 1;
+            } catch (e) {
+                analytics.referrers['Unknown'] = (analytics.referrers['Unknown'] || 0) + 1;
+            }
+        } else {
+            analytics.referrers['Direct'] = (analytics.referrers['Direct'] || 0) + 1;
         }
     }
     
