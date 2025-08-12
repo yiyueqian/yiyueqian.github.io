@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Tracker Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .status.info { background: #d1ecf1; color: #0c5460; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 IP Tracker Test Page</h1>
+    
+    <div class="test-panel">
+        <h3>Test Results</h3>
+        <div id="test-results"></div>
+        <button onclick="runTests()">Run Tests</button>
+        <button onclick="viewDashboard()">Open Dashboard</button>
+    </div>
+    
+    <div class="test-panel">
+        <h3>Console Output</h3>
+        <pre id="console-output">Click "Run Tests" to see results...</pre>
+    </div>
+
+    <!-- Load the IP tracker -->
+    <script src="fix-functions.js"></script>
+    <script src="ip-tracker.js"></script>
+    
+    <script>
+        let consoleOutput = '';
+        
+        // Capture console logs
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        function addToOutput(type, ...args) {
+            const timestamp = new Date().toLocaleTimeString();
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            consoleOutput += `[${timestamp}] ${type.toUpperCase()}: ${message}\n`;
+            document.getElementById('console-output').textContent = consoleOutput;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addToOutput('log', ...args);
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addToOutput('error', ...args);
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            addToOutput('warn', ...args);
+        };
+        
+        function showStatus(message, type = 'info') {
+            const resultsDiv = document.getElementById('test-results');
+            resultsDiv.innerHTML += `<div class="status ${type}">${message}</div>`;
+        }
+        
+        function runTests() {
+            // Clear previous results
+            document.getElementById('test-results').innerHTML = '';
+            consoleOutput = '';
+            document.getElementById('console-output').textContent = 'Running tests...\n';
+            
+            console.log('🧪 Starting IP Tracker Tests...');
+            
+            // Test 1: Check if IPTracker class exists
+            if (typeof IPTracker !== 'undefined') {
+                showStatus('✅ IPTracker class is loaded', 'success');
+                console.log('✅ IPTracker class found');
+            } else {
+                showStatus('❌ IPTracker class not found', 'error');
+                console.error('❌ IPTracker class not found');
+                return;
+            }
+            
+            // Test 2: Check if tracker instance exists
+            if (window.ipTracker) {
+                showStatus('✅ IP Tracker instance exists', 'success');
+                console.log('✅ IP Tracker instance found');
+            } else {
+                showStatus('⚠️ IP Tracker instance not found, creating one...', 'info');
+                console.log('⚠️ Creating IP Tracker instance...');
+                
+                try {
+                    window.ipTracker = new IPTracker({
+                        debugMode: true,
+                        trackingEnabled: true
+                    });
+                    showStatus('✅ IP Tracker instance created', 'success');
+                } catch (error) {
+                    showStatus(`❌ Failed to create IP Tracker: ${error.message}`, 'error');
+                    console.error('❌ Failed to create IP Tracker:', error);
+                    return;
+                }
+            }
+            
+            // Test 3: Check localStorage
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                showStatus('✅ localStorage is working', 'success');
+                console.log('✅ localStorage is working');
+            } catch (error) {
+                showStatus(`❌ localStorage error: ${error.message}`, 'error');
+                console.error('❌ localStorage error:', error);
+            }
+            
+            // Test 4: Check for existing data
+            const existingData = localStorage.getItem('visitor_tracking_data');
+            if (existingData) {
+                try {
+                    const parsed = JSON.parse(existingData);
+                    showStatus(`✅ Found existing data: ${parsed.totalVisits || 0} visits`, 'success');
+                    console.log('✅ Existing data found:', parsed);
+                } catch (error) {
+                    showStatus('⚠️ Existing data is corrupted', 'error');
+                    console.error('⚠️ Data parsing error:', error);
+                }
+            } else {
+                showStatus('ℹ️ No existing data found', 'info');
+                console.log('ℹ️ No existing data found');
+            }
+            
+            // Test 5: Test tracker methods
+            try {
+                const stats = window.ipTracker.getStats();
+                showStatus(`✅ Tracker stats: ${stats.totalVisits} visits, ${stats.uniqueVisitors} unique`, 'success');
+                console.log('✅ Tracker stats:', stats);
+            } catch (error) {
+                showStatus(`❌ Error getting stats: ${error.message}`, 'error');
+                console.error('❌ Error getting stats:', error);
+            }
+            
+            // Test 6: Test manual visit tracking
+            setTimeout(() => {
+                try {
+                    console.log('🔄 Testing manual visit tracking...');
+                    window.ipTracker.trackCurrentVisit().then(() => {
+                        const newStats = window.ipTracker.getStats();
+                        showStatus(`✅ Manual tracking successful: ${newStats.totalVisits} total visits`, 'success');
+                        console.log('✅ Manual tracking completed. New stats:', newStats);
+                    }).catch(error => {
+                        showStatus(`❌ Manual tracking failed: ${error.message}`, 'error');
+                        console.error('❌ Manual tracking failed:', error);
+                    });
+                } catch (error) {
+                    showStatus(`❌ Manual tracking error: ${error.message}`, 'error');
+                    console.error('❌ Manual tracking error:', error);
+                }
+            }, 1000);
+            
+            console.log('🧪 Tests completed');
+        }
+        
+        function viewDashboard() {
+            window.open('admin-dashboard.html', '_blank');
+        }
+        
+        // Auto-run tests when page loads
+        setTimeout(() => {
+            console.log('🚀 Auto-running tests...');
+            runTests();
+        }, 2000);
+    </script>
+</body>
+</html>
