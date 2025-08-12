@@ -336,10 +336,10 @@
                             <thead>
                                 <tr>
                                     <th>Time</th>
+                                    <th>IP Address</th>
                                     <th>Location</th>
                                     <th>Device</th>
                                     <th>Browser</th>
-                                    <th>Screen</th>
                                     <th>Performance</th>
                                     <th>Behavior</th>
                                 </tr>
@@ -520,32 +520,53 @@
             
             if (recentVisits.length > 0) {
                 visitsTable.innerHTML = recentVisits.map(visit => {
+                    // Handle both basic and enhanced data formats for IP
+                    const ipAddress = visit.ip || 'Unknown';
+                    
+                    // Handle location data (both formats)
+                    let locationInfo;
+                    if (visit.location) {
+                        // Enhanced format
+                        locationInfo = `${visit.location.city || 'Unknown'}, ${visit.location.country || 'Unknown'}`;
+                    } else {
+                        // Basic format
+                        locationInfo = `${visit.city || 'Unknown'}, ${visit.country || 'Unknown'}`;
+                    }
+                    
+                    // Handle device info
                     const deviceInfo = visit.device ? 
-                        `${visit.device.type} (${visit.device.screen?.resolution || 'Unknown'})` : 'Unknown';
+                        `${visit.device.type} (${visit.device.isMobile ? 'Mobile' : visit.device.isTablet ? 'Tablet' : 'Desktop'})` : 
+                        'Unknown';
                     
+                    // Handle browser info
                     const browserInfo = visit.browser ? 
-                        `${visit.browser.name} ${visit.browser.version || ''}` : 'Unknown';
+                        `${visit.browser.name} ${visit.browser.version || ''}` : 
+                        'Unknown';
                     
+                    // Handle performance info
                     const performanceInfo = visit.performance ? 
-                        `<span class="performance-metric">Load: ${visit.performance.pageLoadTime || 0}ms</span>` : '';
+                        `<span class="performance-metric">Load: ${visit.performance.pageLoadTime || 0}ms</span>` : 
+                        '<span class="performance-metric">N/A</span>';
                     
+                    // Handle behavior info
                     const behaviorInfo = visit.behavior ? 
-                        `${formatTime(visit.behavior.timeOnPage || 0)} | ${visit.behavior.scrollDepth || 0}% scroll` : '';
+                        `${formatTime(visit.behavior.timeOnPage || 0)} | ${visit.behavior.scrollDepth || 0}% scroll` : 
+                        'N/A';
                     
                     return `
                         <tr>
                             <td>${new Date(visit.timestamp).toLocaleString()}</td>
-                            <td>${visit.location?.city || 'Unknown'}, ${visit.location?.country || 'Unknown'}</td>
+                            <td><strong>${ipAddress}</strong></td>
+                            <td>${locationInfo}</td>
                             <td>${deviceInfo}</td>
                             <td>${browserInfo}</td>
-                            <td>${visit.device?.screen?.resolution || 'Unknown'}</td>
                             <td>${performanceInfo}</td>
                             <td>${behaviorInfo}</td>
                         </tr>
                     `;
                 }).join('');
             } else {
-                visitsTable.innerHTML = '<tr><td colspan="7" class="no-data">No enhanced visits recorded yet</td></tr>';
+                visitsTable.innerHTML = '<tr><td colspan="7" class="no-data">No visits recorded yet</td></tr>';
             }
         }
         
