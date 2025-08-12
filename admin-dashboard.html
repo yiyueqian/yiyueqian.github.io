@@ -301,24 +301,45 @@
     </div>
 
     <script>
-        // Simple IP Tracker data reader for dashboard
+        // Enhanced IP Tracker data reader for dashboard with debugging
         class DashboardReader {
             constructor() {
                 this.storageKey = 'visitor_tracking_data';
+                this.debugMode = true; // Enable for troubleshooting
                 this.loadData();
             }
             
             loadData() {
                 try {
+                    console.log('🔍 Dashboard: Loading data from localStorage...');
                     const stored = localStorage.getItem(this.storageKey);
+                    console.log('🔍 Dashboard: Raw stored data:', stored ? 'Found' : 'Not found');
+                    console.log('🔍 Dashboard: Data length:', stored ? stored.length : 0);
+                    
                     if (stored) {
                         this.data = JSON.parse(stored);
-                        this.data.uniqueVisitors = new Set(this.data.uniqueVisitors || []);
+                        console.log('🔍 Dashboard: Parsed data:', this.data);
+                        
+                        // Handle uniqueVisitors array/set conversion
+                        if (Array.isArray(this.data.uniqueVisitors)) {
+                            this.data.uniqueVisitors = new Set(this.data.uniqueVisitors);
+                        } else if (!this.data.uniqueVisitors) {
+                            this.data.uniqueVisitors = new Set();
+                        }
+                        
+                        console.log('🔍 Dashboard: Processed data:', {
+                            totalVisits: this.data.totalVisits,
+                            uniqueVisitors: this.data.uniqueVisitors.size,
+                            visitsCount: this.data.visits ? this.data.visits.length : 0,
+                            countries: Object.keys(this.data.countries || {}).length,
+                            cities: Object.keys(this.data.cities || {}).length
+                        });
                     } else {
+                        console.log('🔍 Dashboard: No data found in localStorage');
                         this.data = null;
                     }
                 } catch (error) {
-                    console.error('Error loading data:', error);
+                    console.error('🔍 Dashboard: Error loading data:', error);
                     this.data = null;
                 }
             }
@@ -328,7 +349,10 @@
             }
             
             exportData() {
-                if (!this.data) return;
+                if (!this.data) {
+                    alert('No data to export');
+                    return;
+                }
                 
                 const exportData = {
                     ...this.data,
@@ -350,6 +374,7 @@
             clearData() {
                 if (confirm('Are you sure you want to clear all visitor data? This action cannot be undone.')) {
                     localStorage.removeItem(this.storageKey);
+                    console.log('🔍 Dashboard: Data cleared');
                     location.reload();
                 }
             }
@@ -358,6 +383,7 @@
         const dashboard = new DashboardReader();
         
         function displayDashboard() {
+            console.log('🔍 Dashboard: Starting display...');
             const data = dashboard.getData();
             const loading = document.getElementById('loading');
             const content = document.getElementById('dashboard-content');
@@ -365,11 +391,34 @@
             
             loading.style.display = 'none';
             
+            console.log('🔍 Dashboard: Data check:', {
+                hasData: !!data,
+                hasVisits: data && data.visits && data.visits.length > 0,
+                totalVisits: data ? data.totalVisits : 0
+            });
+            
             if (!data || !data.visits || data.visits.length === 0) {
+                console.log('🔍 Dashboard: Showing no-data message');
                 noData.style.display = 'block';
+                
+                // Add debug info to no-data section
+                const debugInfo = document.createElement('div');
+                debugInfo.style.cssText = 'margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 5px; font-family: monospace; font-size: 12px;';
+                debugInfo.innerHTML = `
+                    <strong>Debug Information:</strong><br>
+                    • Storage Key: ${dashboard.storageKey}<br>
+                    • Data Found: ${!!data}<br>
+                    • Raw Storage: ${localStorage.getItem(dashboard.storageKey) ? 'Yes' : 'No'}<br>
+                    • Visits Array: ${data && data.visits ? data.visits.length : 'N/A'}<br>
+                    <br>
+                    <button onclick="createTestData()" style="padding: 5px 10px; margin-right: 10px;">Create Test Data</button>
+                    <button onclick="location.href='debug-tracker.html'" style="padding: 5px 10px;">Open Debug Tool</button>
+                `;
+                noData.appendChild(debugInfo);
                 return;
             }
             
+            console.log('🔍 Dashboard: Displaying data...');
             content.style.display = 'block';
             
             // Update stats
@@ -425,17 +474,20 @@
                     <tr>
                         <td>${new Date(visit.timestamp).toLocaleString()}</td>
                         <td>${visit.ip}</td>
-                        <td>${visit.city}, ${visit.country}</td>
-                        <td>${visit.referrer === 'Direct' ? 'Direct' : new URL(visit.referrer || 'http://direct').hostname}</td>
+                        <td>${visit.city || 'Unknown'}, ${visit.country || 'Unknown'}</td>
+                        <td>${visit.referrer === 'Direct' ? 'Direct' : (visit.referrer ? new URL(visit.referrer).hostname : 'Unknown')}</td>
                         <td>${visit.isUniqueVisitor ? '✅ Yes' : '❌ No'}</td>
                     </tr>
                 `).join('');
             } else {
                 visitsTable.innerHTML = '<tr><td colspan="5" class="no-data">No visits recorded yet</td></tr>';
             }
+            
+            console.log('🔍 Dashboard: Display completed');
         }
         
         function refreshData() {
+            console.log('🔍 Dashboard: Refreshing data...');
             dashboard.loadData();
             displayDashboard();
         }
@@ -448,8 +500,39 @@
             dashboard.clearData();
         }
         
-        // Initialize dashboard
-        setTimeout(displayDashboard, 500);
+        function createTestData() {
+            const testData = {
+                visits: [
+                    {
+                        timestamp: new Date().toISOString(),
+                        ip: '192.168.1.1',
+                        country: 'United States',
+                        city: 'New York',
+                        region: 'NY',
+                        timezone: 'America/New_York',
+                        userAgent: navigator.userAgent,
+                        referrer: 'Direct',
+                        isUniqueVisitor: true,
+                        sessionId: 'test_session_1'
+                    }
+                ],
+                totalVisits: 1,
+                uniqueVisitors: ['192.168.1.1'],
+                countries: { 'United States': 1 },
+                cities: { 'New York': 1 },
+                lastVisit: new Date().toISOString()
+            };
+            
+            localStorage.setItem('visitor_tracking_data', JSON.stringify(testData));
+            alert('Test data created! Refreshing dashboard...');
+            location.reload();
+        }
+        
+        // Initialize dashboard with delay to ensure DOM is ready
+        setTimeout(() => {
+            console.log('🔍 Dashboard: Initializing...');
+            displayDashboard();
+        }, 500);
     </script>
 </body>
 </html>

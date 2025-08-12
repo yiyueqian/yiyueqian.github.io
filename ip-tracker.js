@@ -38,22 +38,32 @@ class IPTracker {
         }
         
         try {
+            this.log('Initializing IP tracker...');
+            
             // Load existing data
             this.loadStoredData();
+            this.log('Loaded existing data:', this.visitData);
             
             // Track current visit
             await this.trackCurrentVisit();
+            this.log('Current visit tracked');
             
             // Save updated data
             this.saveData();
+            this.log('Data saved to localStorage');
             
             // Display stats if in debug mode
             if (this.options.debugMode) {
                 this.displayStats();
             }
             
+            // Make tracker globally accessible for debugging
+            window.ipTrackerInstance = this;
+            this.log('IP tracker initialized successfully');
+            
         } catch (error) {
             this.log('Error initializing IP tracker:', error);
+            console.error('IP Tracker Error:', error);
         }
     }
     
@@ -179,16 +189,45 @@ class IPTracker {
     }
     
     saveData() {
-        if (!this.options.enableLocalStorage) return;
+        if (!this.options.enableLocalStorage) {
+            this.log('Local storage disabled, skipping save');
+            return;
+        }
         
         try {
             const dataToStore = {
                 ...this.visitData,
                 uniqueVisitors: Array.from(this.visitData.uniqueVisitors)
             };
-            localStorage.setItem(this.options.storageKey, JSON.stringify(dataToStore));
+            
+            const jsonString = JSON.stringify(dataToStore);
+            localStorage.setItem(this.options.storageKey, jsonString);
+            
+            // Verify the data was saved correctly
+            const verification = localStorage.getItem(this.options.storageKey);
+            if (verification) {
+                this.log('Data saved successfully to localStorage. Size:', jsonString.length, 'characters');
+                this.log('Verification successful. Stored data exists.');
+            } else {
+                this.log('Warning: Data save verification failed');
+            }
+            
         } catch (error) {
             this.log('Error saving data:', error);
+            console.error('IP Tracker Save Error:', error);
+            
+            // Try to save minimal data if full save fails
+            try {
+                const minimalData = {
+                    totalVisits: this.visitData.totalVisits,
+                    uniqueVisitors: Array.from(this.visitData.uniqueVisitors),
+                    lastVisit: this.visitData.lastVisit
+                };
+                localStorage.setItem(this.options.storageKey + '_minimal', JSON.stringify(minimalData));
+                this.log('Minimal data saved as fallback');
+            } catch (fallbackError) {
+                this.log('Fallback save also failed:', fallbackError);
+            }
         }
     }
     
@@ -314,9 +353,9 @@ class IPTracker {
 
 // Auto-initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize with default options
+    // Initialize with default options - debug mode enabled for troubleshooting
     window.ipTracker = new IPTracker({
-        debugMode: false, // Set to true for development
+        debugMode: true, // Temporarily enabled for debugging
         trackingEnabled: true,
         enableGeolocation: true,
         enableLocalStorage: true
@@ -325,6 +364,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Create admin panel for site owner
     // Uncomment the next line if you want the admin panel
     // window.ipTracker.createAdminPanel();
+    
+    // Add a simple way to check if tracking is working
+    setTimeout(() => {
+        const stats = window.ipTracker.getStats();
+        console.log('🔍 IP Tracker Status Check:', {
+            totalVisits: stats.totalVisits,
+            uniqueVisitors: stats.uniqueVisitors,
+            dataInStorage: !!localStorage.getItem('visitor_tracking_data')
+        });
+    }, 2000);
 });
 
 // Export for module systems

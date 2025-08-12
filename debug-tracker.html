@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Tracker Debug Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .debug-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .debug-panel h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .status.info { background: #d1ecf1; color: #0c5460; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        .data-display {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 IP Tracker Debug Tool</h1>
+    
+    <div class="debug-panel">
+        <h3>Local Storage Check</h3>
+        <div id="storage-status"></div>
+        <button onclick="checkLocalStorage()">Check Local Storage</button>
+        <button onclick="clearLocalStorage()">Clear Local Storage</button>
+        <button onclick="createTestData()">Create Test Data</button>
+    </div>
+    
+    <div class="debug-panel">
+        <h3>Current Data</h3>
+        <div id="current-data"></div>
+        <button onclick="refreshData()">Refresh Data</button>
+        <button onclick="exportDebugData()">Export Debug Data</button>
+    </div>
+    
+    <div class="debug-panel">
+        <h3>Tracker Status</h3>
+        <div id="tracker-status"></div>
+        <button onclick="initializeTracker()">Initialize Tracker</button>
+        <button onclick="simulateVisit()">Simulate Visit</button>
+    </div>
+    
+    <div class="debug-panel">
+        <h3>Raw Local Storage Data</h3>
+        <div id="raw-data" class="data-display"></div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'visitor_tracking_data';
+        
+        function showStatus(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+        
+        function checkLocalStorage() {
+            try {
+                // Test if localStorage is available
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                
+                const data = localStorage.getItem(STORAGE_KEY);
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    showStatus('storage-status', 
+                        `✅ Local Storage Working<br>
+                         📊 Data Found: ${data.length} characters<br>
+                         🔢 Total Visits: ${parsed.totalVisits || 0}<br>
+                         👥 Unique Visitors: ${parsed.uniqueVisitors ? parsed.uniqueVisitors.length : 0}`, 
+                        'success');
+                } else {
+                    showStatus('storage-status', '⚠️ Local Storage Working but No Data Found', 'info');
+                }
+            } catch (error) {
+                showStatus('storage-status', `❌ Local Storage Error: ${error.message}`, 'error');
+            }
+            
+            displayRawData();
+        }
+        
+        function clearLocalStorage() {
+            if (confirm('Are you sure you want to clear all tracking data?')) {
+                localStorage.removeItem(STORAGE_KEY);
+                showStatus('storage-status', '🗑️ Local Storage Cleared', 'info');
+                refreshData();
+                displayRawData();
+            }
+        }
+        
+        function createTestData() {
+            const testData = {
+                visits: [
+                    {
+                        timestamp: new Date().toISOString(),
+                        ip: '192.168.1.1',
+                        country: 'United States',
+                        city: 'New York',
+                        region: 'NY',
+                        timezone: 'America/New_York',
+                        userAgent: navigator.userAgent,
+                        referrer: 'Direct',
+                        isUniqueVisitor: true,
+                        sessionId: 'test_session_1'
+                    },
+                    {
+                        timestamp: new Date(Date.now() - 3600000).toISOString(),
+                        ip: '10.0.0.1',
+                        country: 'Canada',
+                        city: 'Toronto',
+                        region: 'ON',
+                        timezone: 'America/Toronto',
+                        userAgent: navigator.userAgent,
+                        referrer: 'https://google.com',
+                        isUniqueVisitor: true,
+                        sessionId: 'test_session_2'
+                    }
+                ],
+                totalVisits: 2,
+                uniqueVisitors: ['192.168.1.1', '10.0.0.1'],
+                countries: { 'United States': 1, 'Canada': 1 },
+                cities: { 'New York': 1, 'Toronto': 1 },
+                lastVisit: new Date().toISOString()
+            };
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(testData));
+            showStatus('storage-status', '✅ Test Data Created', 'success');
+            refreshData();
+            displayRawData();
+        }
+        
+        function refreshData() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    const display = document.getElementById('current-data');
+                    display.innerHTML = `
+                        <div class="status success">
+                            <strong>📊 Current Statistics:</strong><br>
+                            Total Visits: ${parsed.totalVisits || 0}<br>
+                            Unique Visitors: ${parsed.uniqueVisitors ? parsed.uniqueVisitors.length : 0}<br>
+                            Countries: ${Object.keys(parsed.countries || {}).length}<br>
+                            Cities: ${Object.keys(parsed.cities || {}).length}<br>
+                            Last Visit: ${parsed.lastVisit ? new Date(parsed.lastVisit).toLocaleString() : 'Never'}<br>
+                            Recent Visits: ${parsed.visits ? parsed.visits.length : 0}
+                        </div>
+                    `;
+                } else {
+                    showStatus('current-data', '📭 No Data Available', 'info');
+                }
+            } catch (error) {
+                showStatus('current-data', `❌ Error Reading Data: ${error.message}`, 'error');
+            }
+        }
+        
+        function displayRawData() {
+            const rawDataElement = document.getElementById('raw-data');
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    rawDataElement.innerHTML = `<pre>${JSON.stringify(parsed, null, 2)}</pre>`;
+                } else {
+                    rawDataElement.innerHTML = '<p>No raw data available</p>';
+                }
+            } catch (error) {
+                rawDataElement.innerHTML = `<p>Error displaying raw data: ${error.message}</p>`;
+            }
+        }
+        
+        function exportDebugData() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                if (data) {
+                    const debugInfo = {
+                        timestamp: new Date().toISOString(),
+                        userAgent: navigator.userAgent,
+                        url: window.location.href,
+                        localStorage: JSON.parse(data),
+                        storageKey: STORAGE_KEY
+                    };
+                    
+                    const blob = new Blob([JSON.stringify(debugInfo, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `debug_data_${new Date().toISOString().split('T')[0]}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    showStatus('current-data', '📥 Debug Data Exported', 'success');
+                } else {
+                    showStatus('current-data', '❌ No Data to Export', 'error');
+                }
+            } catch (error) {
+                showStatus('current-data', `❌ Export Error: ${error.message}`, 'error');
+            }
+        }
+        
+        function initializeTracker() {
+            try {
+                // Simulate the tracker initialization
+                showStatus('tracker-status', '🔄 Initializing Tracker...', 'info');
+                
+                // Check if the main tracker script is available
+                if (typeof IPTracker !== 'undefined') {
+                    const tracker = new IPTracker({
+                        debugMode: true,
+                        trackingEnabled: true
+                    });
+                    showStatus('tracker-status', '✅ Tracker Initialized Successfully', 'success');
+                } else {
+                    showStatus('tracker-status', '⚠️ IPTracker class not found. Make sure ip-tracker.js is loaded.', 'error');
+                }
+            } catch (error) {
+                showStatus('tracker-status', `❌ Tracker Error: ${error.message}`, 'error');
+            }
+        }
+        
+        function simulateVisit() {
+            try {
+                const existingData = localStorage.getItem(STORAGE_KEY);
+                let data = existingData ? JSON.parse(existingData) : {
+                    visits: [],
+                    totalVisits: 0,
+                    uniqueVisitors: [],
+                    countries: {},
+                    cities: {},
+                    lastVisit: null
+                };
+                
+                const simulatedVisit = {
+                    timestamp: new Date().toISOString(),
+                    ip: `192.168.1.${Math.floor(Math.random() * 255)}`,
+                    country: 'Test Country',
+                    city: 'Test City',
+                    region: 'Test Region',
+                    timezone: 'Test/Timezone',
+                    userAgent: navigator.userAgent,
+                    referrer: 'Debug Tool',
+                    isUniqueVisitor: true,
+                    sessionId: `debug_${Date.now()}`
+                };
+                
+                data.visits.push(simulatedVisit);
+                data.totalVisits++;
+                data.uniqueVisitors.push(simulatedVisit.ip);
+                data.countries['Test Country'] = (data.countries['Test Country'] || 0) + 1;
+                data.cities['Test City'] = (data.cities['Test City'] || 0) + 1;
+                data.lastVisit = simulatedVisit.timestamp;
+                
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                showStatus('tracker-status', '✅ Simulated Visit Added', 'success');
+                refreshData();
+                displayRawData();
+            } catch (error) {
+                showStatus('tracker-status', `❌ Simulation Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLocalStorage();
+            refreshData();
+        });
+    </script>
+</body>
+</html>
