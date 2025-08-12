@@ -301,11 +301,11 @@
     </div>
 
     <script>
-        // Enhanced IP Tracker data reader for dashboard with debugging
+        // IP Tracker data reader for dashboard
         class DashboardReader {
             constructor() {
                 this.storageKey = 'visitor_tracking_data';
-                this.debugMode = true; // Enable for troubleshooting
+                this.debugMode = true;
                 this.loadData();
             }
             
@@ -470,15 +470,42 @@
             const recentVisits = (data.visits || []).slice(-20).reverse();
             
             if (recentVisits.length > 0) {
-                visitsTable.innerHTML = recentVisits.map(visit => `
-                    <tr>
-                        <td>${new Date(visit.timestamp).toLocaleString()}</td>
-                        <td>${visit.ip}</td>
-                        <td>${visit.city || 'Unknown'}, ${visit.country || 'Unknown'}</td>
-                        <td>${visit.referrer === 'Direct' ? 'Direct' : (visit.referrer ? new URL(visit.referrer).hostname : 'Unknown')}</td>
-                        <td>${visit.isUniqueVisitor ? '✅ Yes' : '❌ No'}</td>
-                    </tr>
-                `).join('');
+                visitsTable.innerHTML = recentVisits.map(visit => {
+                    // Handle both basic and enhanced data formats
+                    let city, country, referrer;
+                    
+                    if (visit.location) {
+                        // Enhanced format
+                        city = visit.location.city || 'Unknown';
+                        country = visit.location.country || 'Unknown';
+                        referrer = visit.page ? visit.page.referrer : (visit.referrer || 'Direct');
+                    } else {
+                        // Basic format
+                        city = visit.city || 'Unknown';
+                        country = visit.country || 'Unknown';
+                        referrer = visit.referrer || 'Direct';
+                    }
+                    
+                    // Format referrer
+                    let referrerDisplay = referrer;
+                    if (referrer !== 'Direct' && referrer !== 'Unknown') {
+                        try {
+                            referrerDisplay = new URL(referrer).hostname;
+                        } catch (e) {
+                            referrerDisplay = referrer;
+                        }
+                    }
+                    
+                    return `
+                        <tr>
+                            <td>${new Date(visit.timestamp).toLocaleString()}</td>
+                            <td>${visit.ip}</td>
+                            <td>${city}, ${country}</td>
+                            <td>${referrerDisplay}</td>
+                            <td>${visit.isUniqueVisitor ? '✅ Yes' : '❌ No'}</td>
+                        </tr>
+                    `;
+                }).join('');
             } else {
                 visitsTable.innerHTML = '<tr><td colspan="5" class="no-data">No visits recorded yet</td></tr>';
             }
