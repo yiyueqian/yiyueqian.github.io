@@ -172,3 +172,9 @@ span.highlight {
   margin-bottom: 50px;
   padding-bottom: 20px;
 }
+
+.pub-tags {
+  color: #1772d0;
+  font-size: 13px;
+  margin-top: 4px;
+}
